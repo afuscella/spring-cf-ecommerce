@@ -1,7 +1,7 @@
 package com.ecommerce.backend.models.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 import com.ecommerce.backend.entities.Category;
@@ -20,9 +20,9 @@ public class CategoryDTO implements Serializable {
 
 	private String name;
 
-	private Date createAt;
+	private Instant createAt;
 
-	private Date updatedAt;
+	private Instant updatedAt;
 
 	public CategoryDTO(Category category) {
 		this.uuid = category.getUuid();

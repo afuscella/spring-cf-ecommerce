@@ -1,15 +1,14 @@
 package com.ecommerce.backend.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -41,14 +40,19 @@ public class Category implements Serializable {
 
 	private String name;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at")
+	@Column(name = "created_at",
+			columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	@Builder.Default
-	private Date createdAt = new Date();
+	private Instant createdAt = Instant.now();
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at")
+	@Column(name = "updated_at",
+			columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	@Builder.Default
-	private Date updatedAt = new Date();
+	private Instant updatedAt = Instant.now();
+
+	@PreUpdate
+	public void preUpdate() {
+		updatedAt = Instant.now();
+	}
 
 }
