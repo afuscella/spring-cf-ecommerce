@@ -1,6 +1,5 @@
 package com.ecommerce.backend.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,14 +29,19 @@ public class CategoryServices {
 	}
 
 	@Transactional(readOnly = true)
-	public CategoryResponse handleIndex(UUID uuid) {
-		Optional<Category> categoryEntity = categoryRepository.findById(uuid);
-		Category category = categoryEntity.orElseThrow(EntityNotFoundException::new);
+	public CategoryDTO handleIndex(UUID uuid) {
+		Optional<Category> categoryOptional = categoryRepository.findById(uuid);
+		Category categoryEntity = categoryOptional.orElseThrow(EntityNotFoundException::new);
 
-		List<CategoryDTO> data = new ArrayList<>();
-		data.add(new CategoryDTO(category));
+		return new CategoryDTO(categoryEntity);
+	}
 
-		return new CategoryResponse(data);
+	@Transactional
+	public CategoryDTO handleInsert(CategoryDTO categoryDTO) {
+		Category categoryEntity = new Category();
+		categoryEntity.setName(categoryDTO.getName());
+		Category entity = categoryRepository.save(categoryEntity);
+		return new CategoryDTO(entity);
 	}
 
 }
