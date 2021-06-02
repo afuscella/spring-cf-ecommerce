@@ -2,12 +2,12 @@ package com.ecommerce.backend.exceptions;
 
 import com.ecommerce.backend.utils.BackendConstants;
 
-public class DatabaseException extends BackendException {
+public class DatabaseIntegrityException extends BackendException {
 
-	public static final String NOT_FOUND = "exception.entity.notFound";
+	public static final String INTEGRITY_VIOLATION = "exception.database.integrityViolation";
 
-	public DatabaseException() {
-		super(BackendConstants.BUNDLE.getString(NOT_FOUND));
+	public DatabaseIntegrityException() {
+		super(BackendConstants.BUNDLE.getString(INTEGRITY_VIOLATION));
 	}
 
 }
