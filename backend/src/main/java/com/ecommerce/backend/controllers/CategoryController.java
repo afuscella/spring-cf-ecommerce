@@ -60,4 +60,12 @@ public class CategoryController {
 		return ResponseEntity.ok().body(categoryDTO);
 	}
 
+	@DeleteMapping(value = "/{uuid}")
+	public ResponseEntity<Void> deleteByUuid(
+			@PathVariable
+					UUID uuid) {
+		categoryServices.handleDeleteByUuid(uuid);
+		return ResponseEntity.noContent().build();
+	}
+
 }
