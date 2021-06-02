@@ -22,10 +22,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
@@ -40,13 +40,11 @@ public class Category implements Serializable {
 
 	private String name;
 
-	@Column(name = "created_at",
-			columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	@Builder.Default
 	private Instant createdAt = Instant.now();
 
-	@Column(name = "updated_at",
-			columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	@Builder.Default
 	private Instant updatedAt = Instant.now();
 
