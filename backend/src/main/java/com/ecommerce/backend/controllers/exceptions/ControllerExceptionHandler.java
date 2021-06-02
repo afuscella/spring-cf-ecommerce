@@ -8,15 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.ecommerce.backend.exceptions.EntityNotFoundException;
+import com.ecommerce.backend.exceptions.ResourceNotFoundException;
 import com.ecommerce.backend.models.exceptions.ResponseError;
 import com.ecommerce.backend.utils.MessagesConstants;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<ResponseError> entityNotFound(EntityNotFoundException e, HttpServletRequest request) {
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<ResponseError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request) {
 		ResponseError error = new ResponseError();
 		error.setTimestamp(Instant.now());
 		error.setStatus(HttpStatus.NOT_FOUND.value());
