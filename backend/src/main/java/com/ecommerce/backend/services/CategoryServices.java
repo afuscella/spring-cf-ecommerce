@@ -1,15 +1,14 @@
 package com.ecommerce.backend.services;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +26,10 @@ public class CategoryServices {
 	CategoryRepository categoryRepository;
 
 	@Transactional(readOnly = true)
-	public CategoryResponse handleIndexAll() {
-		List<Category> categories = categoryRepository.findAll();
-		List<CategoryDTO> data = categories.stream().map(CategoryDTO::new).collect(Collectors.toList());
+	public CategoryResponse handleIndexAllPaged(PageRequest pageRequest) {
+		Page<Category> categories = categoryRepository.findAll(pageRequest);
+
+		Page<CategoryDTO> data = categories.map(CategoryDTO::new);
 		return new CategoryResponse(data);
 	}
 
