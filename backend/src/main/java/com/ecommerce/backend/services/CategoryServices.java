@@ -8,10 +8,13 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.backend.entities.Category;
+import com.ecommerce.backend.exceptions.DatabaseIntegrityException;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
 import com.ecommerce.backend.models.dto.CategoryDTO;
 import com.ecommerce.backend.models.response.CategoryResponse;
@@ -56,6 +59,18 @@ public class CategoryServices {
 		}
 		catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException();
+		}
+	}
+
+	public void handleDeleteByUuid(UUID uuid) {
+		try {
+			categoryRepository.deleteById(uuid);
+		}
+		catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException();
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DatabaseIntegrityException();
 		}
 	}
 
