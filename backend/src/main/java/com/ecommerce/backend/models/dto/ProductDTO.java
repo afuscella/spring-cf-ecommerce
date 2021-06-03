@@ -31,8 +31,6 @@ public class ProductDTO implements Serializable {
 
 	private String imgUrl;
 
-	private Instant date;
-
 	private List<CategoryDTO> categories = new ArrayList<>();
 
 	private Instant createdAt;
@@ -45,7 +43,6 @@ public class ProductDTO implements Serializable {
 		this.description = product.getDescription();
 		this.price = product.getPrice();
 		this.imgUrl = product.getImgUrl();
-		this.date = product.getDate();
 		this.createdAt = product.getCreatedAt();
 		this.updatedAt = product.getUpdatedAt();
 	}
