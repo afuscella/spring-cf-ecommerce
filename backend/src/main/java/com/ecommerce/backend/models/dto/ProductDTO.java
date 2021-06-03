@@ -3,6 +3,7 @@ package com.ecommerce.backend.models.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -32,7 +33,7 @@ public class ProductDTO implements Serializable {
 
 	private Instant date;
 
-	private List<CategoryDTO> categories;
+	private List<CategoryDTO> categories = new ArrayList<>();
 
 	private Instant createdAt;
 
