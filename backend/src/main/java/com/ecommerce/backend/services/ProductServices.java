@@ -2,14 +2,18 @@ package com.ecommerce.backend.services;
 
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.backend.entities.Product;
+import com.ecommerce.backend.exceptions.DatabaseIntegrityException;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
 import com.ecommerce.backend.models.dto.ProductDTO;
 import com.ecommerce.backend.models.dto.TransformProductDTO;
@@ -41,37 +45,37 @@ public class ProductServices {
 		return new ProductDTO(entity, entity.getCategories());
 	}
 
-	//	@Transactional
-	//	public ProductDTO handleInsert(ProductDTO productDTO) {
-	//		Product entity = transformProductDTO.toEntity(productDTO);
-	//		entity = productRepository.save(entity);
-	//		return new ProductDTO(entity);
-	//	}
-	//
-	//	@Transactional
-	//	public ProductDTO handleUpdateByUuid(UUID uuid, ProductDTO productDTO) {
-	//		try {
-	//			Product entity = productRepository.getOne(uuid);
-	//			// entity.setName(productDTO.getName());
-	//			// entity = TransformProductDTO.toEntity(productDTO);
-	//			entity = productRepository.save(entity);
-	//			return new ProductDTO(entity);
-	//		}
-	//		catch (EntityNotFoundException e) {
-	//			throw new ResourceNotFoundException();
-	//		}
-	//	}
+	@Transactional
+	public ProductDTO handleCreate(ProductDTO productDTO) {
+		Product entity = transformProductDTO.toEntity(productDTO);
+		entity = productRepository.save(entity);
+		return new ProductDTO(entity, entity.getCategories());
+	}
 
-	//	public void handleDeleteByUuid(UUID uuid) {
-	//		try {
-	//			productRepository.deleteById(uuid);
-	//		}
-	//		catch (EmptyResultDataAccessException e) {
-	//			throw new ResourceNotFoundException();
-	//		}
-	//		catch (DataIntegrityViolationException e) {
-	//			throw new DatabaseIntegrityException();
-	//		}
-	//	}
+	@Transactional
+	public ProductDTO handleUpdateByIndex(UUID uuid, ProductDTO productDTO) {
+		try {
+			Product entity = productRepository.getOne(uuid);
+			entity = transformProductDTO.toEntity(productDTO, entity);
+
+			entity = productRepository.save(entity);
+			return new ProductDTO(entity, entity.getCategories());
+		}
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException();
+		}
+	}
+
+	public void handleDeleteByIndex(UUID uuid) {
+		try {
+			productRepository.deleteById(uuid);
+		}
+		catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException();
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DatabaseIntegrityException();
+		}
+	}
 
 }

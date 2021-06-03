@@ -49,7 +49,7 @@ public class CategoryController {
 	}
 
 	@GetMapping(value = "/{uuid}")
-	public ResponseEntity<CategoryDTO> findByUuid(
+	public ResponseEntity<CategoryDTO> findByIndex(
 			@PathVariable
 					UUID uuid) {
 		CategoryDTO categoryDTO = categoryServices.handleIndex(uuid);
@@ -60,19 +60,19 @@ public class CategoryController {
 	public ResponseEntity<CategoryDTO> create(
 			@RequestBody
 					CategoryDTO categoryDTO) {
-		categoryDTO = categoryServices.handleInsert(categoryDTO);
+		categoryDTO = categoryServices.handleCreate(categoryDTO);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{uuid}").buildAndExpand(categoryDTO.getUuid()).toUri();
 		return ResponseEntity.created(uri).body(categoryDTO);
 	}
 
 	@PutMapping(value = "/{uuid}")
-	public ResponseEntity<CategoryDTO> updateByUuid(
+	public ResponseEntity<CategoryDTO> updateByIndex(
 			@PathVariable
 					UUID uuid,
 			@RequestBody
 					CategoryDTO categoryDTO) {
-		categoryDTO = categoryServices.handleUpdateByUuid(uuid, categoryDTO);
+		categoryDTO = categoryServices.handleUpdateByIndex(uuid, categoryDTO);
 		return ResponseEntity.ok().body(categoryDTO);
 	}
 
@@ -80,7 +80,7 @@ public class CategoryController {
 	public ResponseEntity<Void> deleteByUuid(
 			@PathVariable
 					UUID uuid) {
-		categoryServices.handleDeleteByUuid(uuid);
+		categoryServices.handleDeleteByIndex(uuid);
 		return ResponseEntity.noContent().build();
 	}
 
