@@ -42,7 +42,7 @@ public class CategoryServices {
 	}
 
 	@Transactional
-	public CategoryDTO handleInsert(CategoryDTO categoryDTO) {
+	public CategoryDTO handleCreate(CategoryDTO categoryDTO) {
 		Category entity = new Category();
 		entity.setName(categoryDTO.getName());
 		entity = categoryRepository.save(entity);
@@ -50,10 +50,11 @@ public class CategoryServices {
 	}
 
 	@Transactional
-	public CategoryDTO handleUpdateByUuid(UUID uuid, CategoryDTO categoryDTO) {
+	public CategoryDTO handleUpdateByIndex(UUID uuid, CategoryDTO categoryDTO) {
 		try {
 			Category entity = categoryRepository.getOne(uuid);
 			entity.setName(categoryDTO.getName());
+
 			entity = categoryRepository.save(entity);
 			return new CategoryDTO(entity);
 		}
@@ -62,7 +63,7 @@ public class CategoryServices {
 		}
 	}
 
-	public void handleDeleteByUuid(UUID uuid) {
+	public void handleDeleteByIndex(UUID uuid) {
 		try {
 			categoryRepository.deleteById(uuid);
 		}
