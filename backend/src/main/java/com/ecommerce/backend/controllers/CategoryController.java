@@ -44,7 +44,7 @@ public class CategoryController {
 					defaultValue = "name")
 					String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-		CategoryResponse response = categoryServices.handleIndexAllPaged(pageRequest);
+		CategoryResponse response = categoryServices.handleAllPaged(pageRequest);
 		return ResponseEntity.ok().body(response);
 	}
 
