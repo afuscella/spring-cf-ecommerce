@@ -20,14 +20,14 @@ public class CategoryDTO implements Serializable {
 
 	private String name;
 
-	private Instant createAt;
+	private Instant createdAt;
 
 	private Instant updatedAt;
 
 	public CategoryDTO(Category category) {
 		this.uuid = category.getUuid();
 		this.name = category.getName();
-		this.createAt = category.getCreatedAt();
+		this.createdAt = category.getCreatedAt();
 		this.updatedAt = category.getUpdatedAt();
 	}
 
