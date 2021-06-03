@@ -2,76 +2,76 @@ package com.ecommerce.backend.services;
 
 import java.util.Optional;
 import java.util.UUID;
-import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ecommerce.backend.entities.Category;
-import com.ecommerce.backend.exceptions.DatabaseIntegrityException;
+import com.ecommerce.backend.entities.Product;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
-import com.ecommerce.backend.models.dto.CategoryDTO;
-import com.ecommerce.backend.models.response.CategoryResponse;
-import com.ecommerce.backend.repositories.CategoryRepository;
+import com.ecommerce.backend.models.dto.ProductDTO;
+import com.ecommerce.backend.models.dto.TransformProductDTO;
+import com.ecommerce.backend.models.response.ProductResponse;
+import com.ecommerce.backend.repositories.ProductRepository;
 
 @Service
-public class CategoryServices {
+public class ProductServices {
 
 	@Autowired
-	CategoryRepository categoryRepository;
+	ProductRepository productRepository;
+
+	@Autowired
+	TransformProductDTO transformProductDTO;
 
 	@Transactional(readOnly = true)
-	public CategoryResponse handleIndexAllPaged(PageRequest pageRequest) {
-		Page<Category> categories = categoryRepository.findAll(pageRequest);
+	public ProductResponse handleAllPaged(PageRequest pageRequest) {
+		Page<Product> products = productRepository.findAll(pageRequest);
 
-		Page<CategoryDTO> data = categories.map(CategoryDTO::new);
-		return new CategoryResponse(data);
+		Page<ProductDTO> data = products.map(product -> new ProductDTO(product, product.getCategories()));
+		return new ProductResponse(data);
 	}
 
 	@Transactional(readOnly = true)
-	public CategoryDTO handleIndex(UUID uuid) {
-		Optional<Category> categoryOptional = categoryRepository.findById(uuid);
-		Category entity = categoryOptional.orElseThrow(ResourceNotFoundException::new);
+	public ProductDTO handleIndex(UUID uuid) {
+		Optional<Product> productOptional = productRepository.findById(uuid);
+		Product entity = productOptional.orElseThrow(ResourceNotFoundException::new);
 
-		return new CategoryDTO(entity);
+		return new ProductDTO(entity, entity.getCategories());
 	}
 
-	@Transactional
-	public CategoryDTO handleInsert(CategoryDTO categoryDTO) {
-		Category entity = new Category();
-		entity.setName(categoryDTO.getName());
-		entity = categoryRepository.save(entity);
-		return new CategoryDTO(entity);
-	}
+	//	@Transactional
+	//	public ProductDTO handleInsert(ProductDTO productDTO) {
+	//		Product entity = transformProductDTO.toEntity(productDTO);
+	//		entity = productRepository.save(entity);
+	//		return new ProductDTO(entity);
+	//	}
+	//
+	//	@Transactional
+	//	public ProductDTO handleUpdateByUuid(UUID uuid, ProductDTO productDTO) {
+	//		try {
+	//			Product entity = productRepository.getOne(uuid);
+	//			// entity.setName(productDTO.getName());
+	//			// entity = TransformProductDTO.toEntity(productDTO);
+	//			entity = productRepository.save(entity);
+	//			return new ProductDTO(entity);
+	//		}
+	//		catch (EntityNotFoundException e) {
+	//			throw new ResourceNotFoundException();
+	//		}
+	//	}
 
-	@Transactional
-	public CategoryDTO handleUpdateByUuid(UUID uuid, CategoryDTO categoryDTO) {
-		try {
-			Category entity = categoryRepository.getOne(uuid);
-			entity.setName(categoryDTO.getName());
-			entity = categoryRepository.save(entity);
-			return new CategoryDTO(entity);
-		}
-		catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException();
-		}
-	}
-
-	public void handleDeleteByUuid(UUID uuid) {
-		try {
-			categoryRepository.deleteById(uuid);
-		}
-		catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException();
-		}
-		catch (DataIntegrityViolationException e) {
-			throw new DatabaseIntegrityException();
-		}
-	}
+	//	public void handleDeleteByUuid(UUID uuid) {
+	//		try {
+	//			productRepository.deleteById(uuid);
+	//		}
+	//		catch (EmptyResultDataAccessException e) {
+	//			throw new ResourceNotFoundException();
+	//		}
+	//		catch (DataIntegrityViolationException e) {
+	//			throw new DatabaseIntegrityException();
+	//		}
+	//	}
 
 }

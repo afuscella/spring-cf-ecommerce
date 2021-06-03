@@ -26,7 +26,7 @@ public class CategoryServices {
 	CategoryRepository categoryRepository;
 
 	@Transactional(readOnly = true)
-	public CategoryResponse handleIndexAllPaged(PageRequest pageRequest) {
+	public CategoryResponse handleAllPaged(PageRequest pageRequest) {
 		Page<Category> categories = categoryRepository.findAll(pageRequest);
 
 		Page<CategoryDTO> data = categories.map(CategoryDTO::new);
