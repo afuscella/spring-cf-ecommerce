@@ -1,12 +1,18 @@
 package com.ecommerce.backend.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
@@ -27,8 +33,8 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
 @Entity
-@Table(name = "tb_category")
-public class Category implements Serializable {
+@Table(name = "tb_product")
+public class Product implements Serializable {
 
 	@Id
 	@Type(type = "uuid-char")
@@ -39,6 +45,22 @@ public class Category implements Serializable {
 	private UUID uuid;
 
 	private String name;
+
+	@Column(columnDefinition = "TEXT")
+	private String description;
+
+	private BigDecimal price;
+
+	private String imgUrl;
+
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant date;
+
+	@ManyToMany
+	@JoinTable(name = "tb_product_category",
+			joinColumns = @JoinColumn(name = "product_uuid"),
+			inverseJoinColumns = @JoinColumn(name = "category_uuid"))
+	private Set<Category> categories = new HashSet<>();
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	@Builder.Default
