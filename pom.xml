@@ -12,8 +12,9 @@
         <version.junit-jupiter>5.7.0</version.junit-jupiter>
         <version.mockito-all>1.9.5</version.mockito-all>
 
+        <version.spring-boot>2.3.4.RELEASE</version.spring-boot>
+
         <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
-        <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
         <version.java>11</version.java>
     </properties>
 
@@ -75,7 +76,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>${version.spring-boot}</version>
             </plugin>
         </plugins>
     </build>
