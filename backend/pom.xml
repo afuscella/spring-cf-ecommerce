@@ -11,6 +11,7 @@
 
     <artifactId>backend</artifactId>
     <version>1.0.0</version>
+
     <name>backend</name>
     <description>Ecommerce Backend</description>
 
