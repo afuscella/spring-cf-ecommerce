@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +26,8 @@ public class CategoryServices {
 	CategoryRepository categoryRepository;
 
 	@Transactional(readOnly = true)
-	public CategoryResponse handleAllPaged(PageRequest pageRequest) {
-		Page<Category> categories = categoryRepository.findAll(pageRequest);
+	public CategoryResponse handleAllPaged(Pageable pageable) {
+		Page<Category> categories = categoryRepository.findAll(pageable);
 
 		Page<CategoryDTO> data = categories.map(CategoryDTO::new);
 		return new CategoryResponse(data);
