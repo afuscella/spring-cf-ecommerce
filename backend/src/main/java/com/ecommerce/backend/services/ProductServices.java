@@ -24,10 +24,10 @@ import com.ecommerce.backend.repositories.ProductRepository;
 public class ProductServices {
 
 	@Autowired
-	ProductRepository productRepository;
+	private ProductRepository productRepository;
 
 	@Autowired
-	TransformProductDTO transformProductDTO;
+	private TransformProductDTO transformProductDTO;
 
 	@Transactional(readOnly = true)
 	public ProductResponse handleAllPaged(Pageable pageable) {
