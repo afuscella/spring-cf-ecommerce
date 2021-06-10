@@ -23,7 +23,7 @@ import com.ecommerce.backend.repositories.CategoryRepository;
 public class CategoryServices {
 
 	@Autowired
-	CategoryRepository categoryRepository;
+	private CategoryRepository categoryRepository;
 
 	@Transactional(readOnly = true)
 	public CategoryResponse handleAllPaged(Pageable pageable) {

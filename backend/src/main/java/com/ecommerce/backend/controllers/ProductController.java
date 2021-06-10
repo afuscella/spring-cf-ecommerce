@@ -25,7 +25,7 @@ import com.ecommerce.backend.services.ProductServices;
 public class ProductController {
 
 	@Autowired
-	ProductServices productServices;
+	private ProductServices productServices;
 
 	@GetMapping
 	public ResponseEntity<ProductResponse> findAll(Pageable pageable) {

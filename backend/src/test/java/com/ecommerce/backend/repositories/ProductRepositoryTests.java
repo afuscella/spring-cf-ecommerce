@@ -21,26 +21,26 @@ public class ProductRepositoryTests {
 	ProductRepository productRepository;
 
 	@Test
-	public void findByIdShouldRetrieveObjectWhenIdExists() {
+	public void findByIdShouldRetrieveObjectWhenUuidExists() {
 		Optional<Product> product = productRepository.findById(TEST_UUID);
 		Assertions.assertTrue(product.isPresent());
 	}
 
 	@Test
-	public void findByIdShouldRetrieveObjectNullWhenIdDoesNotExists() {
+	public void findByIdShouldRetrieveObjectNullWhenUuidDoesNotExists() {
 		UUID uuid = UUID.randomUUID();
 		Optional<Product> product = productRepository.findById(uuid);
 		Assertions.assertTrue(product.isEmpty());
 	}
 
 	@Test
-	public void saveShouldPersistWhenObjectIsProvided() {
+	public void saveShouldPersistWhenObjectUuidProvided() {
 		Product product = productRepository.save(ProductMock.create());
 		Assertions.assertNotNull(product.getUuid());
 	}
 
 	@Test
-	public void deleteShouldDeleteObjectWhenIdExists() {
+	public void deleteShouldDeleteObjectWhenUuidExists() {
 		productRepository.deleteById(TEST_UUID);
 
 		Optional<Product> product = productRepository.findById(TEST_UUID);
@@ -48,7 +48,7 @@ public class ProductRepositoryTests {
 	}
 
 	@Test
-	public void deleteShouldThrowEmptyResultDataAccessExceptionWhenIdDoesNotExist() {
+	public void deleteShouldThrowEmptyResultDataAccessExceptionWhenUuidDoesNotExist() {
 		UUID uuid = UUID.randomUUID();
 		Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
 			productRepository.deleteById(uuid);
