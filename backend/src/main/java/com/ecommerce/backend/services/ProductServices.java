@@ -30,7 +30,7 @@ public class ProductServices {
 	private TransformProductDTO transformProductDTO;
 
 	@Transactional(readOnly = true)
-	public ProductResponse handleAllPaged(Pageable pageable) {
+	public ProductResponse allPaged(Pageable pageable) {
 		Page<Product> products = productRepository.findAll(pageable);
 
 		Page<ProductDTO> data = products.map(product -> new ProductDTO(product, product.getCategories()));
@@ -38,7 +38,7 @@ public class ProductServices {
 	}
 
 	@Transactional(readOnly = true)
-	public ProductDTO handleIndex(UUID uuid) {
+	public ProductDTO index(UUID uuid) {
 		Optional<Product> productOptional = productRepository.findById(uuid);
 		Product entity = productOptional.orElseThrow(ResourceNotFoundException::new);
 
@@ -46,14 +46,14 @@ public class ProductServices {
 	}
 
 	@Transactional
-	public ProductDTO handleCreate(ProductDTO productDTO) {
+	public ProductDTO create(ProductDTO productDTO) {
 		Product entity = transformProductDTO.toEntity(productDTO);
 		entity = productRepository.save(entity);
 		return new ProductDTO(entity, entity.getCategories());
 	}
 
 	@Transactional
-	public ProductDTO handleUpdateByIndex(UUID uuid, ProductDTO productDTO) {
+	public ProductDTO updateByIndex(UUID uuid, ProductDTO productDTO) {
 		try {
 			Product entity = productRepository.getOne(uuid);
 			entity = transformProductDTO.toEntity(productDTO, entity);
@@ -66,7 +66,7 @@ public class ProductServices {
 		}
 	}
 
-	public void handleDeleteByIndex(UUID uuid) {
+	public void deleteByIndex(UUID uuid) {
 		try {
 			productRepository.deleteById(uuid);
 		}

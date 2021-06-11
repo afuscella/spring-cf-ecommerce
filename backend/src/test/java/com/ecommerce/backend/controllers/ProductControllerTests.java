@@ -1,5 +1,6 @@
 package com.ecommerce.backend.controllers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -19,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.ecommerce.backend.exceptions.DatabaseIntegrityException;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
 import com.ecommerce.backend.models.dto.ProductDTO;
 import com.ecommerce.backend.models.response.ProductResponse;
@@ -43,32 +45,32 @@ public class ProductControllerTests {
 	@Test
 	public void findAllShouldReturnPageWhenRequested() throws Exception {
 		ProductResponse productResponse = productResponseMock();
-		Mockito.when(productServices.handleAllPaged(ArgumentMatchers.any())).thenReturn(productResponse);
+		Mockito.when(productServices.allPaged(ArgumentMatchers.any())).thenReturn(productResponse);
 
 		mockMvc.perform(get("/products").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-		Mockito.verify(productServices, Mockito.atLeastOnce()).handleAllPaged(ArgumentMatchers.any());
+		Mockito.verify(productServices, Mockito.atLeastOnce()).allPaged(ArgumentMatchers.any());
 	}
 
 	@Test
 	public void findByIndexShouldRetrieveObjectWhenUuidExists() throws Exception {
-		Mockito.when(productServices.handleIndex(TEST_UUID)).thenReturn(ProductMock.createDTO());
+		Mockito.when(productServices.index(TEST_UUID)).thenReturn(ProductMock.createDTO());
 
 		String urlTemplate = "/products/{uuid}";
 		ResultActions result = mockMvc.perform(get(urlTemplate, TEST_UUID).accept(MediaType.APPLICATION_JSON));
 
 		result.andExpect(status().isOk());
-		assertionsOk(result);
+		assertionsSuccessful(result);
 	}
 
 	@Test
 	public void findByIndexShouldReturnNotFoundWhenUuidDoesNotExist() throws Exception {
-		Mockito.when(productServices.handleIndex(TEST_UUID)).thenThrow(ResourceNotFoundException.class);
+		Mockito.when(productServices.index(TEST_UUID)).thenThrow(ResourceNotFoundException.class);
 
 		String urlTemplate = "/products/{uuid}";
 		ResultActions result = mockMvc.perform(get(urlTemplate, TEST_UUID).accept(MediaType.APPLICATION_JSON));
 
 		result.andExpect(status().isNotFound());
-		assertionsNotFound(result);
+		assertionsError(result);
 	}
 
 	@Test
@@ -76,11 +78,13 @@ public class ProductControllerTests {
 		ProductDTO productDTO = ProductMock.createDTO();
 		String json = objectMapper.writeValueAsString(productDTO);
 
-		Mockito.when(productServices.handleUpdateByIndex(ArgumentMatchers.eq(TEST_UUID), ArgumentMatchers.any())).thenReturn(ProductMock.createDTO());
+		Mockito.when(productServices.updateByIndex(ArgumentMatchers.eq(TEST_UUID), ArgumentMatchers.any())).thenReturn(ProductMock.createDTO());
 
 		String urlTemplate = "/products/{uuid}";
 		ResultActions result = mockMvc.perform(put(urlTemplate, TEST_UUID).contentType(MediaType.APPLICATION_JSON).content(json));
-		assertionsOk(result);
+
+		result.andExpect(status().isOk());
+		assertionsSuccessful(result);
 	}
 
 	@Test
@@ -88,24 +92,56 @@ public class ProductControllerTests {
 		ProductDTO productDTO = ProductMock.createDTO();
 		String json = objectMapper.writeValueAsString(productDTO);
 
-		Mockito.when(productServices.handleUpdateByIndex(ArgumentMatchers.eq(TEST_UUID), ArgumentMatchers.any()))
+		Mockito.when(productServices.updateByIndex(ArgumentMatchers.eq(TEST_UUID), ArgumentMatchers.any()))
 				.thenThrow(ResourceNotFoundException.class);
 
 		String urlTemplate = "/products/{uuid}";
 		ResultActions result = mockMvc.perform(put(urlTemplate, TEST_UUID).contentType(MediaType.APPLICATION_JSON).content(json));
-		assertionsNotFound(result);
+
+		result.andExpect(status().isNotFound());
+		assertionsError(result);
 	}
 
-	private void assertionsOk(ResultActions result) throws Exception {
-		result.andExpect(status().isOk());
+	@Test
+	public void deleteByIndexShouldUpdateObjectWhenUuidExists() throws Exception {
+		Mockito.doNothing().when(productServices).deleteByIndex(TEST_UUID);
+
+		String urlTemplate = "/products/{uuid}";
+		ResultActions result = mockMvc.perform(delete(urlTemplate, TEST_UUID));
+
+		result.andExpect(status().isNoContent());
+	}
+
+	@Test
+	public void deleteByIndexShouldThrowResourceNotFoundExceptionWhenUuidDoesNotExist() throws Exception {
+		Mockito.doThrow(ResourceNotFoundException.class).when(productServices).deleteByIndex(TEST_UUID);
+
+		String urlTemplate = "/products/{uuid}";
+		ResultActions result = mockMvc.perform(delete(urlTemplate, TEST_UUID).contentType(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isNotFound());
+		assertionsError(result);
+	}
+
+	@Test
+	public void deleteByIndexShouldThrowDatabaseIntegrityExceptionWhenEntryIntegrityWasViolated() throws Exception {
+		Mockito.doThrow(DatabaseIntegrityException.class).when(productServices).deleteByIndex(TEST_UUID);
+
+		String urlTemplate = "/products/{uuid}";
+		ResultActions result = mockMvc.perform(delete(urlTemplate, TEST_UUID).contentType(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isBadRequest());
+		assertionsError(result);
+	}
+
+	private void assertionsSuccessful(ResultActions result) throws Exception {
 		result.andExpect(jsonPath("$.uuid").exists());
 		result.andExpect(jsonPath("$.name").exists());
 		result.andExpect(jsonPath("$.description").exists());
 		result.andExpect(jsonPath("$.price").exists());
 	}
 
-	private void assertionsNotFound(ResultActions result) throws Exception {
-		result.andExpect(status().isNotFound());
+	private void assertionsError(ResultActions result) throws Exception {
 		result.andExpect(jsonPath("$.timestamp").exists());
 		result.andExpect(jsonPath("$.status").exists());
 		result.andExpect(jsonPath("$.error").exists());
