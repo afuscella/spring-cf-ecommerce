@@ -54,7 +54,7 @@ public class ProductServiceTests {
 		Mockito.when(productRepository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
 
 		Pageable pageable = PageRequest.of(0, 10);
-		ProductResponse response = productServices.handleAllPaged(pageable);
+		ProductResponse response = productServices.allPaged(pageable);
 
 		Assertions.assertNotNull(response);
 		Mockito.verify(productRepository, Mockito.atLeastOnce()).findAll(pageable);
@@ -65,7 +65,7 @@ public class ProductServiceTests {
 		Optional<Product> productOptional = Optional.of(ProductMock.create());
 		Mockito.when(productRepository.findById(TEST_UUID)).thenReturn(productOptional);
 
-		ProductDTO productDTO = productServices.handleIndex(TEST_UUID);
+		ProductDTO productDTO = productServices.index(TEST_UUID);
 
 		Assertions.assertNotNull(productDTO);
 		Mockito.verify(productRepository, Mockito.atLeastOnce()).findById(TEST_UUID);
@@ -75,7 +75,7 @@ public class ProductServiceTests {
 	public void handleIndexShouldThrowResourceNotFoundExceptionWhenUuidDoesNotExist() {
 		Mockito.when(productRepository.findById(TEST_UUID)).thenReturn(Optional.empty());
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-			productServices.handleIndex(TEST_UUID);
+			productServices.index(TEST_UUID);
 		});
 		Mockito.verify(productRepository, Mockito.atLeastOnce()).findById(TEST_UUID);
 	}
@@ -84,7 +84,7 @@ public class ProductServiceTests {
 	public void deleteShouldDeleteObjectWhenUuidExists() {
 		Mockito.doNothing().when(productRepository).deleteById(TEST_UUID);
 		Assertions.assertDoesNotThrow(() -> {
-			productServices.handleDeleteByIndex(TEST_UUID);
+			productServices.deleteByIndex(TEST_UUID);
 		});
 		Mockito.verify(productRepository, Mockito.times(1)).deleteById(TEST_UUID);
 	}
@@ -93,7 +93,7 @@ public class ProductServiceTests {
 	public void deleteShouldThrowResourceNotFoundExceptionWhenUuidDoesNotExist() {
 		Mockito.doThrow(EmptyResultDataAccessException.class).when(productRepository).deleteById(TEST_UUID);
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-			productServices.handleDeleteByIndex(TEST_UUID);
+			productServices.deleteByIndex(TEST_UUID);
 		});
 		Mockito.verify(productRepository, Mockito.atLeastOnce()).deleteById(TEST_UUID);
 	}
@@ -102,7 +102,7 @@ public class ProductServiceTests {
 	public void deleteShouldThrowDataIntegrityViolationExceptionWhenEntryIntegrityWasViolated() {
 		Mockito.doThrow(DataIntegrityViolationException.class).when(productRepository).deleteById(TEST_UUID);
 		Assertions.assertThrows(DatabaseIntegrityException.class, () -> {
-			productServices.handleDeleteByIndex(TEST_UUID);
+			productServices.deleteByIndex(TEST_UUID);
 		});
 		Mockito.verify(productRepository, Mockito.atLeastOnce()).deleteById(TEST_UUID);
 	}

@@ -29,7 +29,7 @@ public class ProductController {
 
 	@GetMapping
 	public ResponseEntity<ProductResponse> findAll(Pageable pageable) {
-		ProductResponse response = productServices.handleAllPaged(pageable);
+		ProductResponse response = productServices.allPaged(pageable);
 		return ResponseEntity.ok().body(response);
 	}
 
@@ -37,7 +37,7 @@ public class ProductController {
 	public ResponseEntity<ProductDTO> findByIndex(
 			@PathVariable
 					UUID uuid) {
-		ProductDTO productDTO = productServices.handleIndex(uuid);
+		ProductDTO productDTO = productServices.index(uuid);
 		return ResponseEntity.ok().body(productDTO);
 	}
 
@@ -45,7 +45,7 @@ public class ProductController {
 	public ResponseEntity<ProductDTO> create(
 			@RequestBody
 					ProductDTO productDTO) {
-		productDTO = productServices.handleCreate(productDTO);
+		productDTO = productServices.create(productDTO);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{uuid}").buildAndExpand(productDTO.getUuid()).toUri();
 		return ResponseEntity.created(uri).body(productDTO);
@@ -57,7 +57,7 @@ public class ProductController {
 					UUID uuid,
 			@RequestBody
 					ProductDTO productDTO) {
-		productDTO = productServices.handleUpdateByIndex(uuid, productDTO);
+		productDTO = productServices.updateByIndex(uuid, productDTO);
 		return ResponseEntity.ok().body(productDTO);
 	}
 
@@ -65,7 +65,7 @@ public class ProductController {
 	public ResponseEntity<Void> deleteByIndex(
 			@PathVariable
 					UUID uuid) {
-		productServices.handleDeleteByIndex(uuid);
+		productServices.deleteByIndex(uuid);
 		return ResponseEntity.noContent().build();
 	}
 
