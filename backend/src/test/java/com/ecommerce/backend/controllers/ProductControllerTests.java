@@ -2,6 +2,7 @@ package com.ecommerce.backend.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,6 +72,20 @@ public class ProductControllerTests {
 
 		result.andExpect(status().isNotFound());
 		assertionsError(result);
+	}
+
+	@Test
+	public void createShouldCreateObjectWhenRequested() throws Exception {
+		ProductDTO productDTO = ProductMock.createDTO();
+		String json = objectMapper.writeValueAsString(productDTO);
+
+		Mockito.when(productServices.create(ArgumentMatchers.any())).thenReturn(productDTO);
+
+		String urlTemplate = "/products";
+		ResultActions result = mockMvc.perform(post(urlTemplate, TEST_UUID).contentType(MediaType.APPLICATION_JSON).content(json));
+
+		result.andExpect(status().isCreated());
+		assertionsSuccessful(result);
 	}
 
 	@Test
