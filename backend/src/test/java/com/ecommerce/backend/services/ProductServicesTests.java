@@ -30,7 +30,7 @@ import com.ecommerce.backend.repositories.ProductRepository;
 import com.ecommerce.backend.utils.ProductMock;
 
 @ExtendWith(SpringExtension.class)
-public class ProductServiceTests {
+public class ProductServicesTests {
 
 	private final UUID TEST_UUID = UUID.randomUUID();
 
@@ -54,7 +54,7 @@ public class ProductServiceTests {
 		Mockito.when(productRepository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
 
 		Pageable pageable = PageRequest.of(0, 10);
-		ProductResponse response = productServices.allPaged(pageable);
+		ProductResponse response = productServices.findAllPaged(pageable);
 
 		Assertions.assertNotNull(response);
 		Mockito.verify(productRepository, Mockito.atLeastOnce()).findAll(pageable);

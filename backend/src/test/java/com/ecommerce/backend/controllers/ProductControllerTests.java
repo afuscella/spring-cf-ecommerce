@@ -46,10 +46,10 @@ public class ProductControllerTests {
 	@Test
 	public void findAllShouldReturnPageWhenRequested() throws Exception {
 		ProductResponse productResponse = productResponseMock();
-		Mockito.when(productServices.allPaged(ArgumentMatchers.any())).thenReturn(productResponse);
+		Mockito.when(productServices.findAllPaged(ArgumentMatchers.any())).thenReturn(productResponse);
 
 		mockMvc.perform(get("/products").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-		Mockito.verify(productServices, Mockito.atLeastOnce()).allPaged(ArgumentMatchers.any());
+		Mockito.verify(productServices, Mockito.atLeastOnce()).findAllPaged(ArgumentMatchers.any());
 	}
 
 	@Test

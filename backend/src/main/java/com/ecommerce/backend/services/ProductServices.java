@@ -30,7 +30,7 @@ public class ProductServices {
 	private TransformProductDTO transformProductDTO;
 
 	@Transactional(readOnly = true)
-	public ProductResponse allPaged(Pageable pageable) {
+	public ProductResponse findAllPaged(Pageable pageable) {
 		Page<Product> products = productRepository.findAll(pageable);
 
 		Page<ProductDTO> data = products.map(product -> new ProductDTO(product, product.getCategories()));
