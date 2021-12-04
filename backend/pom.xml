@@ -9,6 +9,13 @@
         <version>1.0.0</version>
     </parent>
 
+    <properties>
+        <!-- sonar -->
+        <sonar.projectKey>spring-cf-ecommerce-backend</sonar.projectKey>
+        <sonar-projectVersion>1.0</sonar-projectVersion>
+        <sonar.login>114eefe0f8e8f6962ec573132fec1306f9ebfca1</sonar.login>
+    </properties>
+
     <artifactId>backend</artifactId>
     <version>1.0.0</version>
 

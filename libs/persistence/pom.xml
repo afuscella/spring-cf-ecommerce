@@ -4,21 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.ecommerce</groupId>
-        <artifactId>ecommerce-parent-boot</artifactId>
-        <version>1.0.0</version>
-    </parent>
-
     <groupId>com.ecommerce.libs</groupId>
     <artifactId>persistence</artifactId>
     <version>1.0.0</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>persistence</name>
     <description>Ecommerce Persistence Lib</description>
 
     <properties>
+        <version.spring>2.3.4.RELEASE</version.spring>
+
         <version.h2>1.4.180</version.h2>
         <version.postgresql>42.0.0</version.postgresql>
     </properties>
@@ -27,13 +23,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>${version.spring-boot}</version>
+            <version>${version.spring}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-            <version>${version.spring-boot}</version>
+            <version>${version.spring}</version>
         </dependency>
 
         <dependency>

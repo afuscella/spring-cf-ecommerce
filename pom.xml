@@ -4,18 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
+        <version.java>11</version.java>
+
+        <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- dependencies versions -->
         <version.lombok>1.18.20</version.lombok>
-
         <version.junit-jupiter>5.7.0</version.junit-jupiter>
         <version.mockito-all>1.9.5</version.mockito-all>
-
         <version.spring-boot>2.3.4.RELEASE</version.spring-boot>
-
-        <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
-        <version.java>11</version.java>
     </properties>
 
     <groupId>com.ecommerce</groupId>
@@ -31,7 +30,6 @@
     </parent>
 
     <dependencies>
-
         <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
