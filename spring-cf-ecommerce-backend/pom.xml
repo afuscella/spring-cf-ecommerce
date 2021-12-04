@@ -9,18 +9,18 @@
         <version>1.0.0</version>
     </parent>
 
+    <name>spring-cf-ecommerce-backend</name>
+    <description>Ecommerce Backend</description>
+
     <properties>
         <!-- sonar -->
         <sonar.projectKey>spring-cf-ecommerce-backend</sonar.projectKey>
         <sonar-projectVersion>1.0</sonar-projectVersion>
-        <sonar.login>114eefe0f8e8f6962ec573132fec1306f9ebfca1</sonar.login>
+        <sonar.login>cafc7ed4eb106f34c55435717026e8c5662e034a</sonar.login>
     </properties>
 
-    <artifactId>backend</artifactId>
+    <artifactId>spring-cf-ecommerce-backend</artifactId>
     <version>1.0.0</version>
-
-    <name>backend</name>
-    <description>Ecommerce Backend</description>
 
     <dependencies>
         <dependency>
@@ -45,7 +45,5 @@
             <artifactId>persistence</artifactId>
             <version>1.0.0</version>
         </dependency>
-
     </dependencies>
-
 </project>
