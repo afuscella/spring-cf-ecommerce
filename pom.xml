@@ -3,31 +3,54 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <properties>
-        <version.java>11</version.java>
-
-        <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- dependencies versions -->
-        <version.lombok>1.18.20</version.lombok>
-        <version.junit-jupiter>5.7.0</version.junit-jupiter>
-        <version.mockito-all>1.9.5</version.mockito-all>
-        <version.spring-boot>2.3.4.RELEASE</version.spring-boot>
-    </properties>
-
-    <groupId>com.ecommerce</groupId>
-    <artifactId>ecommerce-parent-boot</artifactId>
-    <version>1.0.0</version>
-    <packaging>pom</packaging>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
+    <groupId>com.ecommerce</groupId>
+    <artifactId>ecommerce-parent-boot</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>spring-cf-ecommerce-multi-modules</name>
+
+    <modules>
+        <module>spring-cf-ecommerce-backend</module>
+    </modules>
+
+    <properties>
+        <version.java>8</version.java>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.release>11</maven.compiler.release>
+
+        <!-- plugins -->
+        <plugin.maven.compiler>3.8.1</plugin.maven.compiler>
+        <plugin.sonar.maven>3.9.1.2184</plugin.sonar.maven>
+        <plugin.jacoco>0.8.7</plugin.jacoco>
+
+        <!-- dependencies versions -->
+        <version.lombok>1.18.22</version.lombok>
+        <version.junit-jupiter>5.7.0</version.junit-jupiter>
+        <version.mockito-all>1.9.5</version.mockito-all>
+        <version.spring-boot>2.3.4.RELEASE</version.spring-boot>
+
+        <!-- jacoco -->
+        <aggregate.report.dir>target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+
+        <!-- sonar -->
+        <sonar.coverage.jacoco.xmlReportPaths>${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.language>java</sonar.language>
+        <sonar.login>cafc7ed4eb106f34c55435717026e8c5662e034a</sonar.login>
+        <sonar.scm.disabled>True</sonar.scm.disabled>
+        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+        <sonar.source>src</sonar.source>
+
+    </properties>
 
     <dependencies>
         <!-- Lombok -->
@@ -46,7 +69,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin}</version>
+                <version>${plugin.maven.compiler}</version>
                 <configuration>
                     <source>${version.java}</source>
                     <target>${version.java}</target>
@@ -54,11 +77,54 @@
             </plugin>
 
             <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${plugin.sonar.maven}</version>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${version.spring-boot}</version>
             </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${plugin.jacoco}</version>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>coverage</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
