@@ -4,18 +4,21 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.ecommerce</groupId>
-    <artifactId>ecommerce-parent-boot</artifactId>
+    <groupId>spring-cf-ecommerce</groupId>
+    <artifactId>spring-cf-ecommerce-boot</artifactId>
     <version>1.0.0</version>
   </parent>
 
-  <artifactId>spring-cf-ecommerce-backend</artifactId>
+  <artifactId>backend</artifactId>
+  <name>backend</name>
   <version>1.0.0</version>
-
-  <name>spring-cf-ecommerce-backend</name>
   <description>Ecommerce Backend</description>
 
   <properties>
+    <!-- dependencies versions -->
+    <version.spring-boot>2.3.4.RELEASE</version.spring-boot>
+
+    <!-- sonar -->
     <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
   </properties>
 
@@ -43,5 +46,25 @@
       <version>1.0.0</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${version.spring-boot}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+            <configuration>
+              <classifier>exec</classifier>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
