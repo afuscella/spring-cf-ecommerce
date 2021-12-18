@@ -17,7 +17,7 @@
   <properties>
     <version.spring>2.3.4.RELEASE</version.spring>
 
-    <version.h2>1.4.180</version.h2>
+    <version.h2>2.0.202</version.h2>
     <version.postgresql>42.0.0</version.postgresql>
 
   </properties>
