@@ -1,17 +1,19 @@
 package com.ecommerce.backend.repositories;
 
-import java.util.Optional;
-import java.util.UUID;
+import com.ecommerce.backend.entities.Product;
+import com.ecommerce.backend.utils.ProductMock;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import com.ecommerce.backend.entities.Product;
-import com.ecommerce.backend.utils.ProductMock;
+import java.util.Optional;
+import java.util.UUID;
 
+@Disabled
 @DataJpaTest
 public class ProductRepositoryTests {
 
@@ -30,7 +32,7 @@ public class ProductRepositoryTests {
 	public void findByIdShouldRetrieveObjectNullWhenUuidDoesNotExists() {
 		UUID uuid = UUID.randomUUID();
 		Optional<Product> product = productRepository.findById(uuid);
-		// Assertions.assertTrue(product.isEmpty());
+		Assertions.assertTrue(product.isEmpty());
 	}
 
 	@Test
@@ -44,7 +46,7 @@ public class ProductRepositoryTests {
 		productRepository.deleteById(TEST_UUID);
 
 		Optional<Product> product = productRepository.findById(TEST_UUID);
-		// Assertions.assertTrue(product.isEmpty());
+		Assertions.assertTrue(product.isEmpty());
 	}
 
 	@Test

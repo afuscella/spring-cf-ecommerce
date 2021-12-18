@@ -1,19 +1,29 @@
 package com.ecommerce.backend.repositories;
 
-import java.util.Optional;
-import java.util.UUID;
+import com.ecommerce.backend.entities.Category;
+import com.ecommerce.backend.utils.CategoryMock;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import com.ecommerce.backend.entities.Category;
-import com.ecommerce.backend.utils.CategoryMock;
+import java.util.Optional;
+import java.util.UUID;
 
+@Disabled
 @DataJpaTest
 public class CategoryRepositoryTests {
+
+	@Test
+	public void deleteShouldDeleteObjectWhenIdExists() {
+		categoryRepository.deleteById(TEST_UUID);
+
+		Optional<Category> category = categoryRepository.findById(TEST_UUID);
+		Assertions.assertTrue(category.isEmpty());
+	}
 
 	private final UUID TEST_UUID = UUID.fromString("7776802e-55c6-44d1-99c1-95045c9681be");
 
@@ -37,14 +47,6 @@ public class CategoryRepositoryTests {
 	public void saveShouldPersistWhenObjectIsProvided() {
 		Category category = categoryRepository.save(CategoryMock.create());
 		Assertions.assertNotNull(category);
-	}
-
-	@Test
-	public void deleteShouldDeleteObjectWhenIdExists() {
-		categoryRepository.deleteById(TEST_UUID);
-
-		Optional<Category> category = categoryRepository.findById(TEST_UUID);
-		// Assertions.assertTrue(category.isEmpty());
 	}
 
 	@Test

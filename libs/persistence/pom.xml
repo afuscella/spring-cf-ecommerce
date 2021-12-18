@@ -3,14 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-<!--  <parent>-->
-<!--    <groupId>spring-cf-ecommerce</groupId>-->
-<!--    <artifactId>spring-cf-ecommerce-boot</artifactId>-->
-<!--    <version>1.0.0</version>-->
-<!--    <relativePath />-->
-<!--  </parent>-->
+  <parent>
+    <groupId>spring-cf-ecommerce</groupId>
+    <artifactId>spring-cf-ecommerce-boot</artifactId>
+    <version>1.0.0</version>
+  </parent>
 
-  <groupId>spring-cf-ecommerce</groupId>
   <artifactId>persistence</artifactId>
   <name>persistence</name>
   <version>1.0.0</version>
@@ -21,6 +19,7 @@
 
     <version.h2>1.4.180</version.h2>
     <version.postgresql>42.0.0</version.postgresql>
+
   </properties>
 
   <dependencies>

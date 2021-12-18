@@ -1,14 +1,12 @@
 package com.ecommerce.backend.controllers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
-import java.util.UUID;
+import com.ecommerce.backend.exceptions.DatabaseIntegrityException;
+import com.ecommerce.backend.exceptions.ResourceNotFoundException;
+import com.ecommerce.backend.models.dto.ProductDTO;
+import com.ecommerce.backend.models.response.ProductResponse;
+import com.ecommerce.backend.services.ProductServices;
+import com.ecommerce.backend.utils.ProductMock;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -21,13 +19,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.ecommerce.backend.exceptions.DatabaseIntegrityException;
-import com.ecommerce.backend.exceptions.ResourceNotFoundException;
-import com.ecommerce.backend.models.dto.ProductDTO;
-import com.ecommerce.backend.models.response.ProductResponse;
-import com.ecommerce.backend.services.ProductServices;
-import com.ecommerce.backend.utils.ProductMock;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
+import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
 public class ProductControllerTests {
@@ -45,13 +42,11 @@ public class ProductControllerTests {
 
 	@Test
 	public void findAllShouldReturnPageWhenRequested() throws Exception {
-		/*
 		ProductResponse productResponse = productResponseMock();
 		Mockito.when(productServices.findAllPaged(ArgumentMatchers.any())).thenReturn(productResponse);
 
 		mockMvc.perform(get("/products").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 		Mockito.verify(productServices, Mockito.atLeastOnce()).findAllPaged(ArgumentMatchers.any());
-		*/
 	}
 
 	@Test
@@ -109,8 +104,7 @@ public class ProductControllerTests {
 		ProductDTO productDTO = ProductMock.createDTO();
 		String json = objectMapper.writeValueAsString(productDTO);
 
-		Mockito.when(productServices.updateByIndex(ArgumentMatchers.eq(TEST_UUID), ArgumentMatchers.any()))
-				.thenThrow(ResourceNotFoundException.class);
+		Mockito.when(productServices.updateByIndex(ArgumentMatchers.eq(TEST_UUID), ArgumentMatchers.any())).thenThrow(ResourceNotFoundException.class);
 
 		String urlTemplate = "/products/{uuid}";
 		ResultActions result = mockMvc.perform(put(urlTemplate, TEST_UUID).contentType(MediaType.APPLICATION_JSON).content(json));
@@ -166,11 +160,9 @@ public class ProductControllerTests {
 		result.andExpect(jsonPath("$.path").exists());
 	}
 
-	/*
 	private ProductResponse productResponseMock() {
 		PageImpl<ProductDTO> page = new PageImpl<>(List.of(ProductMock.createDTO()));
 		return new ProductResponse(page);
 	}
-	*/
 
 }

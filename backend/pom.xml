@@ -16,7 +16,7 @@
 
   <properties>
     <!-- dependencies versions -->
-    <version.spring-boot>2.3.4.RELEASE</version.spring-boot>
+    <version.spring-boot>2.6.1</version.spring-boot>
 
     <!-- sonar -->
     <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
@@ -49,25 +49,5 @@
       <version>1.0.0</version>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${version.spring-boot}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-            <configuration>
-              <classifier>exec</classifier>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

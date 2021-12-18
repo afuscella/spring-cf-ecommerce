@@ -1,25 +1,5 @@
 package com.ecommerce.backend.services;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import com.ecommerce.backend.entities.Product;
 import com.ecommerce.backend.exceptions.DatabaseIntegrityException;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
@@ -28,6 +8,22 @@ import com.ecommerce.backend.models.dto.TransformProductDTO;
 import com.ecommerce.backend.models.response.ProductResponse;
 import com.ecommerce.backend.repositories.ProductRepository;
 import com.ecommerce.backend.utils.ProductMock;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 public class ProductServicesTests {
@@ -50,7 +46,6 @@ public class ProductServicesTests {
 
 	@Test
 	public void handleAllPagedShouldRetrievePage() {
-		/*
 		PageImpl<Product> page = new PageImpl<>(List.of(ProductMock.create()));
 		Mockito.when(productRepository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
 
@@ -59,12 +54,10 @@ public class ProductServicesTests {
 
 		Assertions.assertNotNull(response);
 		Mockito.verify(productRepository, Mockito.atLeastOnce()).findAll(pageable);
-		*/
 	}
 
 	@Test
 	public void handleIndexShouldRetrieveObjectWhenUuidExists() {
-		/*
 		Optional<Product> productOptional = Optional.of(ProductMock.create());
 		Mockito.when(productRepository.findById(TEST_UUID)).thenReturn(productOptional);
 
@@ -72,7 +65,6 @@ public class ProductServicesTests {
 
 		Assertions.assertNotNull(productDTO);
 		Mockito.verify(productRepository, Mockito.atLeastOnce()).findById(TEST_UUID);
-		*/
 	}
 
 	@Test

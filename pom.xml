@@ -3,13 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-<!--  <parent>-->
-<!--    <groupId>org.springframework.boot</groupId>-->
-<!--    <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--    <version>2.3.4.RELEASE</version>-->
-<!--    <relativePath />-->
-<!--  </parent>-->
-
   <groupId>spring-cf-ecommerce</groupId>
   <artifactId>spring-cf-ecommerce-boot</artifactId>
   <version>1.0.0</version>
@@ -29,54 +22,26 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
 
     <!-- plugins -->
-    <plugin.maven.compiler>3.8.1</plugin.maven.compiler>
-    <plugin.sonar.maven>3.9.1.2184</plugin.sonar.maven>
-    <plugin.jacoco>0.8.7</plugin.jacoco>
+    <plugin-maven-surefire-plugin>3.0.0-M5</plugin-maven-surefire-plugin>
+    <plugin-sonar-maven-plugin>3.7.0.1746</plugin-sonar-maven-plugin>
+    <plugin-jacoco-maven-plugin>0.8.6</plugin-jacoco-maven-plugin>
 
     <!-- dependencies versions -->
     <version.spring-boot>2.3.4.RELEASE</version.spring-boot>
     <version.lombok>1.18.22</version.lombok>
-    <version.junit-jupiter>5.7.0</version.junit-jupiter>
+    <version-junit-jupiter>5.8.1</version-junit-jupiter>
     <version.mockito-all>1.9.5</version.mockito-all>
 
     <!-- jacoco -->
     <aggregate.report.dir>tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
 
-    <!-- sonar -->
-    <sonar.coverage.jacoco.xmlReportPaths>${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
-    <sonar.language>java</sonar.language>
-    <sonar.login>cafc7ed4eb106f34c55435717026e8c5662e034a</sonar.login>
-    <sonar.scm.disabled>True</sonar.scm.disabled>
-    <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-    <sonar.source>src</sonar.source>
-
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <version>${version.spring-boot}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <version>${version.spring-boot}</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.junit.vintage</groupId>
-          <artifactId>junit-vintage-engine</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
     <!-- Lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -87,54 +52,40 @@
   </dependencies>
 
   <build>
-    <finalName>${project.artifactId}</finalName>
-    <plugins>
-      <!-- see more at http://maven.apache.org/plugins/index.html -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${plugin.maven.compiler}</version>
-        <configuration>
-          <source>${version.java}</source>
-          <target>${version.java}</target>
-        </configuration>
-      </plugin>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${plugin-maven-surefire-plugin}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-engine</artifactId>
+              <version>${version-junit-jupiter}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
 
-      <plugin>
-        <groupId>org.sonarsource.scanner.maven</groupId>
-        <artifactId>sonar-maven-plugin</artifactId>
-        <version>${plugin.sonar.maven}</version>
-      </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${plugin-jacoco-maven-plugin}</version>
+          <configuration>
+            <excludes>
+              <exclude>**/*backend/*Application.class</exclude>
+              <exclude>backend/repositories/*</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
 
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${plugin.jacoco}</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-            <id>npm install</id>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <phase>pre-clean</phase>
-            <configuration>
-              <executable>npm</executable>
-              <arguments>
-                <argument>install</argument>
-              </arguments>
-            </configuration>
-          </execution>
-
-        </executions>
-      </plugin>
-
-    </plugins>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>${plugin-sonar-maven-plugin}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
   <profiles>
@@ -161,5 +112,4 @@
       </build>
     </profile>
   </profiles>
-
 </project>
